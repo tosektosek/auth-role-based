@@ -7,6 +7,7 @@ import {
 } from '@angular/common/http';
 import { Observable, of, BehaviorSubject, throwError } from 'rxjs';
 import { Token } from './token.model';
+import { Route, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class JwtInterceptorService implements HttpInterceptor {
   isRefreshingToken = false;
   tokenSubject: BehaviorSubject<Token> = new BehaviorSubject<Token>(null);
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   addToken(req: HttpRequest<any>, token: Token): HttpRequest<any> {
     if (token && token.access_token) {
@@ -27,13 +28,13 @@ export class JwtInterceptorService implements HttpInterceptor {
     | HttpHeaderResponse | HttpProgressEvent | HttpResponse<any> | HttpUserEvent<any>> {
     return next.handle(this.addToken(req, this.authService.getAuthToken())).pipe(
       catchError(error => {
-          switch (error.error.status) {
-            case 400:
-              return this.handle400Error(error);
-            case 401:
-              return this.handle401Error(req, next);
-          }
-          return throwError(error);
+        switch (error.error.status) {
+          case 400:
+            return this.handle400Error(error);
+          case 401:
+            return this.handle401Error(req, next);
+        }
+        return throwError(error);
       })
     );
   }
@@ -51,7 +52,6 @@ export class JwtInterceptorService implements HttpInterceptor {
           if (newToken) {
             localStorage.removeItem('patient');
             localStorage.setItem('patient', JSON.stringify(newToken));
-            console.log(newToken);
             this.tokenSubject.next(newToken);
             return next.handle(this.addToken(req, newToken));
           }
@@ -59,6 +59,7 @@ export class JwtInterceptorService implements HttpInterceptor {
         catchError((e) => {
           // If there is an exception calling 'refreshToken', bad news so logout.
           this.authService.logout();
+          this.router.navigateByUrl('/401');
           return of(null);
         }),
         finalize(() => {
@@ -78,11 +79,11 @@ export class JwtInterceptorService implements HttpInterceptor {
 
   handle400Error(error) {
     if (error && error.error) {
-        // If we get a 400 and the error message is 'invalid_grant', the token is no longer valid so logout.
-        this.authService.logout();
-        return throwError(error);
+      // If we get a 400 and the error message is 'invalid_grant', the token is no longer valid so logout.
+      this.authService.logout();
+      return throwError(error);
     }
 
     return throwError(error);
-}
+  }
 }

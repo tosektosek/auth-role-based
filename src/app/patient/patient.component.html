@@ -1,22 +1,27 @@
-<button
-    mat-stroked-button
-    (click)="getAll()"
->
-    get patients
-</button>
-<ng-container
-    *ngIf="patients.length > 0"
->
-    <p *ngFor="let p of patients">{{p.id}}</p>
-</ng-container>
-<button
-    mat-stroked-button
-    (click)="getAllWith401()"
->
-    get patients
-</button>
-<ng-container
-    *ngIf="patients.length > 0"
->
-    <p *ngFor="let p of patients">{{p.id}}</p>
-</ng-container>
+<section fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="2rem">
+    <button
+        fxFlex="0 0 25%"
+        mat-stroked-button
+        (click)="getAll()"
+    >
+        get patients
+    </button>
+    <button
+        fxFlex="0 0 25%"
+        mat-stroked-button
+        (click)="getAllWith401()"
+    >
+        get patients (fake access_token expired)
+    </button>
+    <button
+        fxFlex="0 0 25%"
+        mat-stroked-button
+        (click)="getAllWith401Refresh()"
+    >
+        get patients (fake refresh_token expired)
+    </button>
+    <ng-container *ngIf="patients.length > 0">
+        <p *ngFor="let p of patients">{{p.username}} {{p.firstName}}</p>
+    </ng-container>
+
+</section>

@@ -14,6 +14,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { fakeBackendProvider } from './backend/fake-backend.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { UnauthorizedErrorComponent } from './unauthorized-error/unauthorized-error.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     DoctorComponent,
     PatientComponent,
     ProfileSelectionComponent,
-    LoginComponent
+    LoginComponent,
+    UnauthorizedErrorComponent
   ],
   imports: [
     BrowserModule,

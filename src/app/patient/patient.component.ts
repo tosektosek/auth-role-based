@@ -18,14 +18,18 @@ export class PatientComponent implements OnInit {
 
   getAll() {
     this.patientService.getPatients().subscribe((response: any[]) => {
-      this.patients = response;
+      this.patients.push(... response);
     });
   }
 
   getAllWith401() {
-    this.patientService.getPatientsWith401().subscribe((response: any[])=> {
-      this.patients = response;
+    this.patientService.getPatientsWith401().subscribe((response: any[]) => {
+      this.patients.push(... response);
     });
+  }
+
+  getAllWith401Refresh() {
+    this.patientService.getAllWith401Refresh().subscribe();
   }
 
 }
