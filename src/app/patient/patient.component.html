@@ -1,0 +1,22 @@
+<button
+    mat-stroked-button
+    (click)="getAll()"
+>
+    get patients
+</button>
+<ng-container
+    *ngIf="patients.length > 0"
+>
+    <p *ngFor="let p of patients">{{p.id}}</p>
+</ng-container>
+<button
+    mat-stroked-button
+    (click)="getAllWith401()"
+>
+    get patients
+</button>
+<ng-container
+    *ngIf="patients.length > 0"
+>
+    <p *ngFor="let p of patients">{{p.id}}</p>
+</ng-container>

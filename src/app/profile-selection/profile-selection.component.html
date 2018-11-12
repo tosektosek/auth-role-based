@@ -1,0 +1,34 @@
+<main
+    fxLayout
+    fxLayoutAlign="center center"
+    fxLayoutGap="10px"
+>
+    <mat-card
+        fxFlex="0 0 25%"
+        class="card"
+        [routerLink]="[ '/login']"
+        [queryParams]="{role: 'doctor', returnUrl: '/doctor'}"
+    >
+        <mat-card-header>
+            <mat-card-title>DOCTOR</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-icon>person</mat-icon>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card
+        fxFlex="0 0 25%"
+        class="card"
+        [routerLink]="[ '/login']"
+        [queryParams]="{role: 'patient', returnUrl: '/patient'}"
+    >
+        <mat-card-header>
+            <mat-card-title>PATIENT</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-icon>person</mat-icon>
+        </mat-card-content>
+    </mat-card>
+
+</main>

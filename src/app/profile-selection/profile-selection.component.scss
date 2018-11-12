@@ -1,0 +1,25 @@
+main {
+  height: 100%;
+}
+
+.card {
+  cursor: pointer;
+  transition: 0.2s;
+  &:hover {
+    background-color: #f4f4f4;
+  }
+
+  mat-card-content {
+    text-align: center;
+  }
+
+  mat-icon {
+    font-size: 10rem;
+    width: 10rem;
+    height: 10rem;
+  }
+}
+
+::ng-deep div.mat-card-header-text {
+  margin: auto;
+}
