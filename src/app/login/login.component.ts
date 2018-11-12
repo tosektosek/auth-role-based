@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
       this.router.navigateByUrl(this.returnUrl);
     },
       err => {
-        this.error = err;
+        this.error = err.error;
       });
   }
 

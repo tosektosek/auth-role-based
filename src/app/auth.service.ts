@@ -13,7 +13,6 @@ export class AuthService {
     if (!token) {
       token = JSON.parse(localStorage.getItem('patient'));
     }
-    console.log(token)
     return token;
   }
   constructor(private http: HttpClient, private router: Router) { }
@@ -30,12 +29,27 @@ export class AuthService {
   }
 
   logout() {
+    const role = this.getRole();
     localStorage.clear();
-    this.router.navigateByUrl('/');
+    if (role) {
+      this.router.navigateByUrl('/');
+    } else {
+      this.router.navigate(['/login'], {queryParams: {returnUrl: `/${role}`, role: role}});
+    }
   }
 
   refreshToken() {
     return this.http.post('refresh', {});
+  }
+
+  getRole() {
+    if (localStorage.getItem('doctor')) {
+      return 'doctor';
+    }
+    if (localStorage.getItem('patient')) {
+      return 'patient';
+    }
+    return undefined;
   }
 }
 

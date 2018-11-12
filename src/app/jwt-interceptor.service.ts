@@ -33,6 +33,7 @@ export class JwtInterceptorService implements HttpInterceptor {
             case 401:
               return this.handle401Error(req, next);
           }
+          return throwError(error);
       })
     );
   }
@@ -56,7 +57,6 @@ export class JwtInterceptorService implements HttpInterceptor {
           }
         }),
         catchError((e) => {
-          console.log(e)
           // If there is an exception calling 'refreshToken', bad news so logout.
           this.authService.logout();
           return of(null);
@@ -77,10 +77,10 @@ export class JwtInterceptorService implements HttpInterceptor {
   }
 
   handle400Error(error) {
-    if (error && error.status === 400 && error.error && error.error.error === 'invalid_grant') {
+    if (error && error.error) {
         // If we get a 400 and the error message is 'invalid_grant', the token is no longer valid so logout.
         this.authService.logout();
-        return of (null);
+        return throwError(error);
     }
 
     return throwError(error);

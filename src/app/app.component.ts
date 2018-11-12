@@ -11,6 +11,8 @@ export class AppComponent {
 
   }
   logout() {
-    this.authService.logout();
+    if (this.authService.getRole()) {
+      this.authService.logout();
+    }
   }
 }

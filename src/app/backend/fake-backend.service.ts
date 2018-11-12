@@ -42,7 +42,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     return of(new HttpResponse({ status: 200, body: token }));
                 } else {
                     // else return 400 bad request
-                    return throwError({ error: { message: 'Username or password is incorrect' } });
+                    return throwError({ error: { message: 'Username or password is incorrect' , status: 400} });
                 }
             }
 
@@ -60,7 +60,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             }
 
             if (request.url.endsWith('patients-with-fale-expired-token') && request.method === 'GET') {
-                return throwError({ error: { status: 401, message: 'Unauthorised' } });
+                if (request.headers.get('Authorization') === 'Bearer fake-jwt-tokens') {
+                    return of(new HttpResponse({ status: 200, body: [patient] }));
+                } else {
+                    // return 401 not authorised if token is null or invalid
+                    return throwError({ error: { status: 401, message: 'Unauthorised' } });
+                }
             }
 
             if (request.url.endsWith('refresh') && request.method === 'POST') {
